@@ -1,5 +1,10 @@
 from django.core.urlresolvers import reverse
 from django.db import models
+KALTURA_DYNAMIC_EMBED = """http://cdnapi.kaltura.com/p/{PARTNER_ID}/sp/{PARTNER_ID}00/embedIframeJs/uiconf_id/{UICONF_ID}/partner_id/{PARTNER_ID}?entry_id={ENTRY_ID}&playerId={UNIQUE_OBJ_ID}&cache_st=1362074486&autoembed=true&width=400&height=333&"""
+KALTURA_DYNAMIC_EMBED = KALTURA_DYNAMIC_EMBED.replace("{PARTNER_ID}","1829221")\
+    .replace("{UICONF_ID}","28733761")\
+    .replace("{UICONF_ID}","28733761")\
+    .replace("{UNIQUE_OBJ_ID}","KalturaDynamicPlayer")
 
 
 class Genre(models.Model):
@@ -66,3 +71,6 @@ class Asset(models.Model):
 
     def get_absolute_url(self):
         return reverse("video",args=(self.id,))
+
+    def get_dynamic_embed_script(self):
+        return KALTURA_DYNAMIC_EMBED.replace("{ENTRY_ID}",self.entry_id)

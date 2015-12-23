@@ -1,10 +1,10 @@
 import argparse
-
 import json
 from pprint import pprint
-
 from django.core.management.base import BaseCommand, CommandError
 from video import models
+
+NLI_PARTNER_ID = """1829221"""
 
 
 class Command(BaseCommand):
@@ -19,42 +19,43 @@ class Command(BaseCommand):
         self.stdout.write("{} assets found.".format(len(assets)))
 
         for asset in assets:
-            try :
+            try:
                 self.import_asset(asset)
             except Exception as e:
                 print(e)
 
     def import_asset(self, asset):
-        genres= [models.Genre.objects.get_or_create(name=genere_name)[0] for genere_name in asset['genres']]
+        genres = [models.Genre.objects.get_or_create(name=genere_name)[0] for genere_name in asset['genres']]
 
         series, created = models.Series.objects.get_or_create(
             name=asset['series']
         )
 
-        season,created = models.Season.objects.get_or_create(
-            series = series,
-            year = asset['year'] or 1
+        season, created = models.Season.objects.get_or_create(
+            series=series,
+            year=asset['year'] or 1
         )
         try:
             episode = int(asset['episode']) or 999999
         except Exception:
             episode = 999999
 
-        o = models.Asset.objects.create(
+        ka
+        o, created = models.Asset.objects.get_or_create(
             system_id=asset['system_id'],
             year=asset['year'] or 1,
             series=series,
-            season = season,
+            season=season,
             episode=episode,
             title=asset['title'],
             full_name=asset['full_name'],
             language=asset['language'],
             synopsys=asset['synopsys'],
             audience=asset['audience'],
-            primo_url=asset['primo_url'],
+            primo_url= asset['primo_url'],
             thumbnail_url=asset['thumbnail_url'],
             entry_id=asset['entry_id'],
-            video_url=asset['video_url'],
+            video_url_iframe=asset['video_url'],
         )
         o.genres.add(*genres)
         o.save()

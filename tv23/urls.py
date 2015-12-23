@@ -26,5 +26,5 @@ urlpatterns = [
     url(r'^ser/$',video.views.SeriesListView.as_view(),name="series_list"),
     url(r'^ser/(?P<pk>\d+)$',video.views.SeriesDetailView.as_view(),name="series"),
     url(r'^sea/(?P<pk>\d+)$',video.views.SeasonDetailView.as_view(),name="season"),
-
+    url(r'^gen/(?P<pk>\d+)$',video.views.GenreDetailView.as_view(),name="genre"),
 ]

@@ -29,6 +29,5 @@ class SeriesDetailView(DetailView):
 class SeasonDetailView(DetailView):
     model = models.Season
 
-
-
-
+class GenreDetailView(DetailView):
+    model = models.Season
