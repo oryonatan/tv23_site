@@ -31,31 +31,31 @@ class Command(BaseCommand):
             name=asset['series']
         )
 
+        fixed_year = asset['year'] or 1
         season, created = models.Season.objects.get_or_create(
             series=series,
-            year=asset['year'] or 1
+            year=fixed_year
         )
         try:
             episode = int(asset['episode']) or 999999
         except Exception:
             episode = 999999
 
-        ka
-        o, created = models.Asset.objects.get_or_create(
-            system_id=asset['system_id'],
-            year=asset['year'] or 1,
-            series=series,
-            season=season,
-            episode=episode,
-            title=asset['title'],
-            full_name=asset['full_name'],
-            language=asset['language'],
-            synopsys=asset['synopsys'],
-            audience=asset['audience'],
-            primo_url= asset['primo_url'],
-            thumbnail_url=asset['thumbnail_url'],
-            entry_id=asset['entry_id'],
-            video_url_iframe=asset['video_url'],
+        theAsset, created = models.Asset.objects.get_or_create(
+            system_id=asset['system_id']
         )
-        o.genres.add(*genres)
-        o.save()
+        theAsset.year = fixed_year,
+        theAsset.series = series,
+        theAsset.season = season,
+        theAsset.episode = episode,
+        theAsset.title = asset['title'],
+        theAsset.full_name = asset['full_name'],
+        theAsset.language = asset['language'],
+        theAsset.synopsys = asset['synopsys'],
+        theAsset.audience = asset['audience'],
+        theAsset.primo_url = asset['primo_url'],
+        theAsset.thumbnail_url = asset['thumbnail_url'],
+        theAsset.entry_id = asset['entry_id'],
+        theAsset.video_url_iframe = asset['video_url'],
+        theAsset.genres.add(*genres)
+        theAsset.save()

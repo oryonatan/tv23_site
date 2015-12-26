@@ -17,13 +17,11 @@ class Genre(models.Model):
 
 
 
-
-
 class Series(models.Model):
     name = models.CharField(max_length=200)
-    description = models.CharField(max_length=200)
-    from_year = models.SmallIntegerField(null=True)
-    to_year = models.SmallIntegerField(null=True)
+    description = models.CharField(max_length=2000)
+    # from_year = models.SmallIntegerField(null=True)
+    # to_year = models.SmallIntegerField(null=True)
     genre = models.ManyToManyField(Genre,related_name="appears_in_series",blank=True)
     '''todo : add link to image   '''
     def __str__(self):
