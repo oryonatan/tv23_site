@@ -44,18 +44,18 @@ class Command(BaseCommand):
         theAsset, created = models.Asset.objects.get_or_create(
             system_id=asset['system_id']
         )
-        theAsset.year = fixed_year,
-        theAsset.series = series,
-        theAsset.season = season,
-        theAsset.episode = episode,
-        theAsset.title = asset['title'],
-        theAsset.full_name = asset['full_name'],
-        theAsset.language = asset['language'],
-        theAsset.synopsys = asset['synopsys'],
-        theAsset.audience = asset['audience'],
-        theAsset.primo_url = asset['primo_url'],
-        theAsset.thumbnail_url = asset['thumbnail_url'],
-        theAsset.entry_id = asset['entry_id'],
-        theAsset.video_url_iframe = asset['video_url'],
+        theAsset.year = fixed_year
+        theAsset.series = series
+        theAsset.season = season
+        theAsset.episode = episode
+        theAsset.title = asset['title']
+        theAsset.full_name = asset['full_name']
+        theAsset.language = asset['language']
+        theAsset.synopsys = asset['synopsys']
+        theAsset.audience = asset['audience']
+        theAsset.primo_url = asset['primo_url']
+        theAsset.thumbnail_url = asset['thumbnail_url']
+        theAsset.entry_id = asset['entry_id']
+        theAsset.video_url_iframe = asset['video_url']
         theAsset.genres.add(*genres)
         theAsset.save()
