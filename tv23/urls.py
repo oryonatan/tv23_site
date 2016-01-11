@@ -1,18 +1,3 @@
-"""tv23 URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.8/topics/http/urls/
-Examples:
-Function viewsb
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Add an import:  from blog import urls as blog_urls
-    2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
-"""
 from django.conf.urls import include, url
 from django.contrib import admin
 
@@ -27,5 +12,6 @@ urlpatterns = [
     url(r'^ser/$',video.views.SeriesListView.as_view(),name="series_list"),
     url(r'^ser/(?P<pk>\d+)$',video.views.SeriesDetailView.as_view(),name="series"),
     url(r'^sea/(?P<pk>\d+)$',video.views.SeasonDetailView.as_view(),name="season"),
+    url(r'^gen/$',video.views.GenreListView.as_view(),name="genre_list"),
     url(r'^gen/(?P<pk>\d+)$',video.views.GenreDetailView.as_view(),name="genre"),
 ]

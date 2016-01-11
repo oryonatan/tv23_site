@@ -2,36 +2,37 @@
 
 
 {% block header %}
-    נגן וידאו
 {% endblock %}
 
 
 {% block content %}
 
+    <div class="row">
+        <div class="col-md-9">
+            <div class="embed-responsive embed-responsive-4by3">
+                <script type="text/javascript"
+                        src="{{ object.get_dynamic_embed_script }}"></script>
+            </div>
+            <h1>
+                {{ object.full_name }}
+                <i>{{ object.episdoe }}</i>
+            </h1>
 
-    <p>
-        שם?:
-        {{ object.full_name }}
-    </p>
-    <p>
-        פרק:
-        {{ object.episdoe }}
-    </p>
-    <p>
-        ז'אנרים
-    <ul class="list-group">
-        {% for genre in object.genres.all %}
-            <li class="list-group-item">{{ genre }}</li>
-        {% endfor %}
-    </ul>
-    </list>
-
-
-    </p>
-
-    <div class="embed-responsive embed-responsive-4by3">
-        <script type="text/javascript" src="{{ object.get_dynamic_embed_script }}"></script>
+        </div>
+        <div class="col-md-3">
+            <p>
+                {% for genre in object.genres.all %}
+                    <a class="btn btn-info btn-block" href="{{ genre.get_absolute_url }}">
+                        {{ genre }}
+                    </a>
+                {% endfor %}
+            </p>
+        </div>
     </div>
+
+
+
+
 
 
 {% endblock %}

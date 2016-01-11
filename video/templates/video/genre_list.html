@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+
+{% block header %}
+    ג'נרים
+{% endblock %}
+
+
+{% block content %}
+    <ul class="list-group">
+        {% for object in object_list %}
+            <li class="list-group-item">
+                <span class="badge">
+                    {{ object.appears_in_assets.count }}
+                </span>
+                <a href="{{ object.get_absolute_url }}">
+                    {{ object|default:"?" }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

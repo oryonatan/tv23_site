@@ -14,8 +14,8 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
-    def __repr__(self):
-        return self.name
+    def get_absolute_url(self):
+        return reverse("genre", args=(self.pk,))
 
 
 class Series(models.Model):
