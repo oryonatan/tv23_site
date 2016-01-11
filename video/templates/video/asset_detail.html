@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 
 {% block header %}
@@ -30,10 +31,17 @@
         </div>
     </div>
 
+    <div>
+        <input type="text" id="start">
+        <button cls="btn btn-xs btn-info" id="save-start"><i class="glyphicon glyphicon-save"></i></button>
+        <input type="text" id="end">
+        <button cls="btn btn-xs btn-info" id="save-end"><i class="glyphicon glyphicon-save"></i></button>
+    </div>
 
 
+{% endblock %}
 
-
-
+{% block scripts %}
+    <script src="{% static "js/player.js" %}"></script>
 {% endblock %}
 
