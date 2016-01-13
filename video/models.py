@@ -66,7 +66,7 @@ class Tag(models.Model):
 
 class Asset(models.Model):
     entry_id = models.CharField(max_length=50, unique=True)
-
+    durationms =models.PositiveIntegerField(null=True)
     system_id = models.IntegerField(default=0)
     year = models.IntegerField(default=0)
     series = models.ForeignKey(Series, null=True)
@@ -104,3 +104,11 @@ class Snippet(models.Model):
     description = models.TextField(max_length=1000, null=True, blank=True)
 
     tags = models.ManyToManyField(Tag, blank=True, related_name='snippets')
+
+    def get_kaltura_thumb_start_offset(self):
+        ratio = self.start_time / (self.asset.durationms /1000)
+        return str(int(ratio*10000 // 100 * 100 -100))
+
+    def get_kaltura_thumb_end_offset(self):
+        ratio = self.end_time / (self.asset.durationms /1000)
+        return str(int(ratio*10000  // 100 * 100 -100))

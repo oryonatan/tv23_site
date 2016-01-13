@@ -9,19 +9,7 @@
 {% block content %}
 
 
-    <form method="post" id="add-snippet">
-        {% csrf_token %}
-        <input type="text" name="start_time" value="111">
-        <input type="text" name="end_time" value="123">
-        <button>Save</button>
-    </form>
-    <ul id="snippets">
-        {% for snippet in object.snippets.all %}
-            {% include "video/_snippet.html" %}
-        {% endfor %}
-    </ul>
-
-    <div class="row">
+    <div class="row" xmlns="http://www.w3.org/1999/html">
         <div class="col-md-9">
             <div class="embed-responsive embed-responsive-4by3">
                 <script type="text/javascript"
@@ -42,40 +30,39 @@
                 {% endfor %}
             </p>
         </div>
-    <div class="col-md-3">
-        <div id="snippet1" class="btn btn-lg btn-success btn-block" >
-                <p> title here</p>
-                <p> st:art - en:d</p>
-        </div>
-        <div id="snippet2">
-                <p> title here</p>
-                <p> st:art - en:d</p>
-        </div>
-    <div id="snippet3">
-                <p> title here</p>
-                <p> st:art - en:d</p>
-        </div>
-    </div>
-
-
-    <div>
-        <input type="text" id="start">
-        <button cls="btn btn-xs btn-info" id="save-start">התחל<i class="glyphicon glyphicon-save"></i></button>
+        <div class="col-md-3" >
+        <span id="snippets">
+                {% for snippet in object.snippets.all %}
+                    {% include "video/_snippet.html" %}
+                {% endfor %}
+        </span>
+        <div>
+            <input type="text" id="start">
+            <button cls="btn btn-xs btn-info" id="save-start">התחל<i class="glyphicon glyphicon-save"></i></button>
         <span id="timer_end_span" hidden="true">
             <input type="text" id="end">
             <button cls="btn btn-xs btn-info" id="save-end">סיים<i class="glyphicon glyphicon-save"></i></button>
         </span>
+
         <span id="snippet_editor" hidden="true">
-            <span class="badge">
-                <span id="snipEd_end">end time</span>
-                -
-                <span id="snipEd_start">start time</span>
-            </span>
-            <input type="text" id="snipEd_title" value="asdas">
-            <button id="snipEd_save" class="btn btn-default">Save</button>
+            <form method="post" id="add-snippet">
+                {% csrf_token %}
+                <span class="badge">
+                    <span id="snipEd_end_display">end time</span>
+                    -
+                    <span id="snipEd_start_display">start time</span>
+                </span>
+                <input type="text" id="snipEd_start" hidden="true" name="start_time">
+                <input type="text" id="snipEd_end" hidden="true" name="end_time">
+                <input type="text" id="snipEd_title" value="הכנס שם למקטע" name="title">
+                <input type="text" id="snipEd_desc" value="ההכנס תיאור למקטע" name="description">
+                <button id="snipEd_save" class="btn btn-default">Save</button>
+            </form>
         </span>
+
+
+        </div>
     </div>
-</div>
 
 
 {% endblock %}
