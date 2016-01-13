@@ -16,11 +16,10 @@ class AssetDetailView(DetailView):
 class AssetListView(ListView):
     def get_queryset(self):
         EPISODES_PER_PAGE = int(self.kwargs['ep_per_page'])
-        first_ep = (int(self.kwargs['page'])-1) * EPISODES_PER_PAGE
-        last_ep= first_ep + EPISODES_PER_PAGE
+        first_ep = (int(self.kwargs['page']) - 1) * EPISODES_PER_PAGE
+        last_ep = first_ep + EPISODES_PER_PAGE
         series = models.Series.objects.get(pk=self.kwargs['pk'])
         return series.asset_set.order_by("episode").all()[first_ep:last_ep]
-
 
 
 class SeriesListView(ListView):
@@ -37,5 +36,9 @@ class SeasonDetailView(DetailView):
     model = models.Season
 
 
+class GenreListView(ListView):
+    model = models.Genre
+
+
 class GenreDetailView(DetailView):
-    model = models.Season
+    model = models.Genre

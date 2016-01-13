@@ -2,9 +2,16 @@
 
 
 {% block header %}
+
+    <a href="{% url "genre_list" %}">
+        ג'נרים
+    </a>
+    &gt;
+
     {{ object.name }}
+
     <span class="badge">
-        {{ object.assets.count }}
+        {{ object.appears_in_assets.count }}
     </span>
 
 {% endblock %}
@@ -12,26 +19,21 @@
 
 {% block content %}
 
-
-
-    {#    <iframe src='{{ object.video_url }}' style='overflow:hidden;height:480px;width:640px'></iframe>#}
     <div class="row">
-        {% for asset in object.get_ordered_assets %}
+        {% for asset in object.appears_in_assets.all %}
             <div class="col-xs-6 col-sm-3 col-md-2">
 
                 <div class="thumbnail" style="height: 180px; overflow: hidden">
-                    <div class="badge">
-                        פרק
-                        {{ asset.episode }}
-                        :
-                        {{ asset.title }}
-                    </div>
                     <a href="{{ asset.get_absolute_url }}">
                         <img src="{{ asset.thumbnail_url }}" width="120"
                              height="90" alt="...">
                     </a>
 
                     <div class="caption">
+                        <b><a href="{{ asset.series.get_absolute_url }}">{{ asset.series }}</a></b>:
+                        פרק
+                        {{ asset.episode }}
+                        :
                         {{ asset.title }}
                     </div>
                 </div>
