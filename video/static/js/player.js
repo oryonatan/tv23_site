@@ -57,4 +57,21 @@ $(function () {
         TV23.kdp.sendNotification("doSeek", $(this).data("start"));
     });
 
+    $("body").on("mouseover", ".xyz", function(){
+        var el = $(this);
+        var original = el.css('background-position');
+        var x = parseInt(original);
+        console.log(x);
+        var h = setInterval(function() {
+            x -= 100;
+            el.css('background-position', x+'px');
+        }, 300);
+        el.one('mouseout', function() {
+            clearInterval(h);
+            el.css('background-position', original);
+        })
+    });
+
+
+
 });

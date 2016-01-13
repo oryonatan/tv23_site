@@ -2,19 +2,21 @@
      data-start="{{ snippet.start_time }}">
     <p> {{ snippet.title }}</p>
     <span class="badge btn-block">
-        {{ snippet.start_time }}:{{ snippet.end_time }}
+        <span class="timeInSecondsDisplay"> {{ snippet.get_end_HHMMSS }} </span>
+        :
+        <span class="timeInSecondsDisplay"> {{ snippet.get_start_HHMMSS }}</span>
     </span>
 
     <div class="row">
         <div class="col-xs-6">
-            <div
+            <div class="xyz"
              style="width: 100px; height: 60px;
        background-image: url(&quot;http://cdnapi.kaltura.com/html5/html5lib/v2.36/modules/KalturaSupport/thumbnail.php/p/1829221/uiconf_id/28733761/entry_id/{{ snippet.asset.entry_id }}/width/100/vid_slices/100?&quot;);
                      background-size: 10000px 100%; background-position: -{{ snippet.get_kaltura_thumb_end_offset }}px 0px;">
         </div>
         </div>
         <div class="col-xs-6">
-        <div style="width: 100px; height: 60px;
+        <div  class="xyz" style="width: 100px; height: 60px;
        background-image: url(&quot;http://cdnapi.kaltura.com/html5/html5lib/v2.36/modules/KalturaSupport/thumbnail.php/p/1829221/uiconf_id/28733761/entry_id/{{ snippet.asset.entry_id }}/width/100/vid_slices/100?&quot;);
                      background-size: 10000px 100%; background-position: -{{ snippet.get_kaltura_thumb_start_offset }}px 0px;">
         </div>

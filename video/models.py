@@ -66,7 +66,7 @@ class Tag(models.Model):
 
 class Asset(models.Model):
     entry_id = models.CharField(max_length=50, unique=True)
-    durationms =models.PositiveIntegerField(null=True)
+    durationms = models.PositiveIntegerField(null=True)
     system_id = models.IntegerField(default=0)
     year = models.IntegerField(default=0)
     series = models.ForeignKey(Series, null=True)
@@ -106,9 +106,23 @@ class Snippet(models.Model):
     tags = models.ManyToManyField(Tag, blank=True, related_name='snippets')
 
     def get_kaltura_thumb_start_offset(self):
-        ratio = self.start_time / (self.asset.durationms /1000)
-        return str(int(ratio*10000 // 100 * 100 -100))
+        ratio = self.start_time / (self.asset.durationms / 1000)
+        return str(int(ratio * 10000 // 100 * 100 - 100))
 
     def get_kaltura_thumb_end_offset(self):
-        ratio = self.end_time / (self.asset.durationms /1000)
-        return str(int(ratio*10000  // 100 * 100 -100))
+        ratio = self.end_time / (self.asset.durationms / 1000)
+        return str(int(ratio * 10000 // 100 * 100 - 100))
+
+    def get_start_HHMMSS(self):
+        return (seconds_to_HHMMSS(self.start_time))
+
+    def get_end_HHMMSS(self):
+        return (seconds_to_HHMMSS(self.end_time))
+
+
+def seconds_to_HHMMSS(seconds):
+    if (seconds < 60):
+        return str(seconds)
+    if (seconds < 3600):
+        return "{}:{}".format((seconds // 60), seconds % 60)
+    return "{}:{}:{}".format((seconds // 3600), (seconds // 60), seconds % 60)
