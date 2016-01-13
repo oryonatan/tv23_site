@@ -29,14 +29,40 @@
                 {% endfor %}
             </p>
         </div>
+    <div class="col-md-3">
+        <div id="snippet1" class="btn btn-lg btn-success btn-block" >
+                <p> title here</p>
+                <p> st:art - en:d</p>
+        </div>
+        <div id="snippet2">
+                <p> title here</p>
+                <p> st:art - en:d</p>
+        </div>
+    <div id="snippet3">
+                <p> title here</p>
+                <p> st:art - en:d</p>
+        </div>
     </div>
+
 
     <div>
         <input type="text" id="start">
-        <button cls="btn btn-xs btn-info" id="save-start"><i class="glyphicon glyphicon-save"></i></button>
-        <input type="text" id="end">
-        <button cls="btn btn-xs btn-info" id="save-end"><i class="glyphicon glyphicon-save"></i></button>
+        <button cls="btn btn-xs btn-info" id="save-start">התחל<i class="glyphicon glyphicon-save"></i></button>
+        <span id="timer_end_span" hidden="true">
+            <input type="text" id="end">
+            <button cls="btn btn-xs btn-info" id="save-end">סיים<i class="glyphicon glyphicon-save"></i></button>
+        </span>
+        <span id="snippet_editor" hidden="true">
+            <span class="badge">
+                <span id="snipEd_end">end time</span>
+                -
+                <span id="snipEd_start">start time</span>
+            </span>
+            <input type="text" id="snipEd_title" value="asdas">
+            <button id="snipEd_save" class="btn btn-default">Save</button>
+        </span>
     </div>
+</div>
 
 
 {% endblock %}
@@ -44,4 +70,3 @@
 {% block scripts %}
     <script src="{% static "js/player.js" %}"></script>
 {% endblock %}
-
