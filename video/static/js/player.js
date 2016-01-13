@@ -1,7 +1,10 @@
-"use strict";
 var TV23 = {
     kdp: null
 };
+
+$(function () {
+
+    "use strict";
 
 
 kWidget.addReadyCallback(function (playerId) {
@@ -42,3 +45,10 @@ function updateSnippetEndTimer(){
     $("#end").val(currentTime.toFixed(1));
 }
 
+    $('#add-snippet').ajaxForm(function (data) {
+        $("#snippets").append(
+            $("<li/>").html(data)
+        );
+    });
+
+});

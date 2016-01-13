@@ -8,6 +8,19 @@
 
 {% block content %}
 
+
+    <form method="post" id="add-snippet">
+        {% csrf_token %}
+        <input type="text" name="start_time" value="111">
+        <input type="text" name="end_time" value="123">
+        <button>Save</button>
+    </form>
+    <ul id="snippets">
+        {% for snippet in object.snippets.all %}
+            {% include "video/_snippet.html" %}
+        {% endfor %}
+    </ul>
+
     <div class="row">
         <div class="col-md-9">
             <div class="embed-responsive embed-responsive-4by3">
@@ -68,5 +81,8 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="{% static "js/csrf.js" %}"></script>
+    <script src="{% static "js/jquery.form.js" %}"></script>
     <script src="{% static "js/player.js" %}"></script>
 {% endblock %}
+
