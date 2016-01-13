@@ -96,11 +96,11 @@ class Asset(models.Model):
         return THUMBNAIL_URL.format(self.entry_id)
 
 
-# class Lag(models.Model):
-#     asset = models.ForeignKey(Asset, related_name='lags')
-#     start_time = models.PositiveIntegerField()
-#     end_time = models.PositiveIntegerField()
-#     title = models.CharField(max_length=1000, null=True, blank=True)
-#     description = models.TextField(max_length=1000, null=True, blank=True)
-#
-#     tags = models.ManyToManyField(Tag, blank=True, related_name='assets')
+class Snippet(models.Model):
+    asset = models.ForeignKey(Asset, related_name='snippets')
+    start_time = models.PositiveIntegerField()
+    end_time = models.PositiveIntegerField()
+    title = models.CharField(max_length=1000, null=True, blank=True)
+    description = models.TextField(max_length=1000, null=True, blank=True)
+
+    tags = models.ManyToManyField(Tag, blank=True, related_name='snippets')
