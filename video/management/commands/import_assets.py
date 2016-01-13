@@ -37,8 +37,11 @@ class Command(BaseCommand):
                 series=asset['series'],
                 year=asset['year']
         )
-        asset['episode'] = (int(asset['episode']) or 999999) if asset[
-            'episode'].isnumeric() else 999999
+
+        if asset['episode'].isnumeric():
+            asset['episode'] = int(asset['episode']) or 999999
+        else:
+            asset['episode'] = 999999
 
         del asset['genres']
 
