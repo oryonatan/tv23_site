@@ -8,6 +8,20 @@
 
 {% block content %}
 
+    {{ view.kuku.as_ul }}
+
+    <form method="post" id="add-snippet">
+        {% csrf_token %}
+        <input type="text" name="start_time" value="111">
+        <input type="text" name="end_time" value="123">
+        <button>Save</button>
+    </form>
+    <ul id="snippets">
+        {% for snippet in object.snippets.all %}
+            {% include "video/_snippet.html" %}
+        {% endfor %}
+    </ul>
+
     <div class="row">
         <div class="col-md-9">
             <div class="embed-responsive embed-responsive-4by3">
@@ -23,7 +37,8 @@
         <div class="col-md-3">
             <p>
                 {% for genre in object.genres.all %}
-                    <a class="btn btn-info btn-block" href="{{ genre.get_absolute_url }}">
+                    <a class="btn btn-info btn-block"
+                       href="{{ genre.get_absolute_url }}">
                         {{ genre }}
                     </a>
                 {% endfor %}
@@ -33,15 +48,19 @@
 
     <div>
         <input type="text" id="start">
-        <button cls="btn btn-xs btn-info" id="save-start"><i class="glyphicon glyphicon-save"></i></button>
+        <button cls="btn btn-xs btn-info" id="save-start"><i
+                class="glyphicon glyphicon-save"></i></button>
         <input type="text" id="end">
-        <button cls="btn btn-xs btn-info" id="save-end"><i class="glyphicon glyphicon-save"></i></button>
+        <button cls="btn btn-xs btn-info" id="save-end"><i
+                class="glyphicon glyphicon-save"></i></button>
     </div>
 
 
 {% endblock %}
 
 {% block scripts %}
+    <script src="{% static "js/csrf.js" %}"></script>
+    <script src="{% static "js/jquery.form.js" %}"></script>
     <script src="{% static "js/player.js" %}"></script>
 {% endblock %}
 

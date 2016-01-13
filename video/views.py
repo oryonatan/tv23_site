@@ -1,6 +1,8 @@
 import random
+
+from django import forms
 from django.core.urlresolvers import reverse_lazy
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.generic import DetailView
 from django.views.generic.list import ListView
@@ -9,8 +11,41 @@ from . import models
 from django.views.generic.base import View
 
 
+class SnippetForm(forms.ModelForm):
+    class Meta:
+        model = models.Snippet
+        fields = (
+            'start_time',
+            'end_time',
+            'title',
+            'description',
+            'tags',
+        )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get("start_time") >= cleaned_data.get("end_time"):
+            raise forms.ValidationError(
+                "start time must be smaller than end time")
+
+
 class AssetDetailView(DetailView):
     model = models.Asset
+
+    def kuku(self):
+        return SnippetForm()
+
+    def post(self, request, *args, **kwargs):
+        form = SnippetForm(data=request.POST)
+        if not form.is_valid():
+            return JsonResponse(
+                    {'result': "bad data", 'errors': form.errors.as_json()},
+                    status=400)
+        form.instance.asset = self.get_object()
+        form.save()
+        return render(request, "video/_snippet.html", {
+            'snippet': form.instance,
+        })
 
 
 class AssetListView(ListView):
