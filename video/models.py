@@ -1,6 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.db import models
 
+THUMBNAIL_URL = 'http://cdnbakmi.kaltura.com/p/1829221/sp/182922100/thumbnail/entry_id/{}/version/100000/acv/161'
+
 KALTURA_DYNAMIC_EMBED = """http://cdnapi.kaltura.com/p/{PARTNER_ID}/sp/{PARTNER_ID}00/embedIframeJs/uiconf_id/{UICONF_ID}/partner_id/{PARTNER_ID}?entry_id={ENTRY_ID}&playerId={UNIQUE_OBJ_ID}&cache_st=1362074486&autoembed=true&width=400&height=333&"""
 KALTURA_DYNAMIC_EMBED = KALTURA_DYNAMIC_EMBED.replace("{PARTNER_ID}",
                                                       "1829221") \
@@ -32,7 +34,7 @@ class Series(models.Model):
         return self.name
 
     def thumbnail(self):
-        return self.asset_set.first().thumbnail_url
+        return self.asset_set.first().get_thumbnail_url()
 
     def get_absolute_url(self):
         return reverse("episodes_list", args=(self.id, 18, 1))
@@ -63,6 +65,8 @@ class Tag(models.Model):
 
 
 class Asset(models.Model):
+    entry_id = models.CharField(max_length=50, unique=True)
+
     system_id = models.IntegerField(default=0)
     year = models.IntegerField(default=0)
     series = models.ForeignKey(Series, null=True)
@@ -76,9 +80,6 @@ class Asset(models.Model):
     genres = models.ManyToManyField(Genre, related_name="appears_in_assets",
                                     blank=True)
     primo_url = models.CharField(max_length=200)
-    thumbnail_url = models.CharField(max_length=200)
-    entry_id = models.CharField(max_length=50)
-    video_url = models.CharField(max_length=300)
 
     tags = models.ManyToManyField(Tag, blank=True, related_name='assets')
 
@@ -91,12 +92,15 @@ class Asset(models.Model):
     def get_dynamic_embed_script(self):
         return KALTURA_DYNAMIC_EMBED.replace("{ENTRY_ID}", self.entry_id)
 
+    def get_thumbnail_url(self):
+        return THUMBNAIL_URL.format(self.entry_id)
 
-class Lag(models.Model):
-    asset = models.ForeignKey(Asset, related_name='lags')
-    start_time = models.PositiveIntegerField()
-    end_time = models.PositiveIntegerField()
-    title = models.CharField(max_length=1000, null=True, blank=True)
-    description = models.TextField(max_length=1000, null=True, blank=True)
 
-    tags = models.ManyToManyField(Tag, blank=True, related_name='assets')
+# class Lag(models.Model):
+#     asset = models.ForeignKey(Asset, related_name='lags')
+#     start_time = models.PositiveIntegerField()
+#     end_time = models.PositiveIntegerField()
+#     title = models.CharField(max_length=1000, null=True, blank=True)
+#     description = models.TextField(max_length=1000, null=True, blank=True)
+#
+#     tags = models.ManyToManyField(Tag, blank=True, related_name='assets')

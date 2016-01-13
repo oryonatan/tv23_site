@@ -1,7 +1,9 @@
 import argparse
 import json
-from pprint import pprint
-from django.core.management.base import BaseCommand, CommandError
+
+from django.core.management.base import BaseCommand
+from tqdm import tqdm
+
 from video import models
 
 NLI_PARTNER_ID = """1829221"""
@@ -18,44 +20,31 @@ class Command(BaseCommand):
         assets = json.load(options['infile'])
         self.stdout.write("{} assets found.".format(len(assets)))
 
-        for asset in assets:
-            try:
-                self.import_asset(asset)
-            except Exception as e:
-                print(e)
+        for asset in tqdm(assets):
+            self.import_asset(asset)
+        print("Done.")
 
     def import_asset(self, asset):
-        genres = [models.Genre.objects.get_or_create(name=genere_name)[0] for genere_name in asset['genres']]
+        genres = [models.Genre.objects.get_or_create(name=genere_name)[0] for
+                  genere_name in asset['genres']]
 
-        series, created = models.Series.objects.get_or_create(
-            name=asset['series']
+        asset['series'], created = models.Series.objects.get_or_create(
+                name=asset['series']
         )
 
-        fixed_year = asset['year'] or 1
+        asset['year'] = asset['year'] or 1
         season, created = models.Season.objects.get_or_create(
-            series=series,
-            year=fixed_year
+                series=asset['series'],
+                year=asset['year']
         )
-        try:
-            episode = int(asset['episode']) or 999999
-        except Exception:
-            episode = 999999
+        asset['episode'] = (int(asset['episode']) or 999999) if asset[
+            'episode'].isnumeric() else 999999
 
-        theAsset, created = models.Asset.objects.get_or_create(
-            system_id=asset['system_id']
+        del asset['genres']
+
+        o = models.Asset.objects.create(
+                season=season,
+                **asset
         )
-        theAsset.year = fixed_year
-        theAsset.series = series
-        theAsset.season = season
-        theAsset.episode = episode
-        theAsset.title = asset['title']
-        theAsset.full_name = asset['full_name']
-        theAsset.language = asset['language']
-        theAsset.synopsys = asset['synopsys']
-        theAsset.audience = asset['audience']
-        theAsset.primo_url = asset['primo_url']
-        theAsset.thumbnail_url = asset['thumbnail_url']
-        theAsset.entry_id = asset['entry_id']
-        theAsset.video_url_iframe = asset['video_url']
-        theAsset.genres.add(*genres)
-        theAsset.save()
+        o.genres.add(*genres)
+        o.save()
