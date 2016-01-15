@@ -9,4 +9,4 @@ Setup:
     pip install -r requirements.txt
     python manage.py migrate
     python manage.py import_assets backend/assets_file.json
-
+    python manage.py fix_durations backend/durations.csv
