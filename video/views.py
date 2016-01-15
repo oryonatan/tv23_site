@@ -32,7 +32,10 @@ class SnippetForm(forms.ModelForm):
 class AssetDetailView(DetailView):
     model = models.Asset
 
-    def kuku(self):
+    def get_title(self):
+        return self.object
+
+    def empty_form(self):
         return SnippetForm()
 
     def post(self, request, *args, **kwargs):

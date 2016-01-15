@@ -8,70 +8,101 @@ $(function () {
         TV23.kdp = document.getElementById(playerId);
     });
 
-    var updateEndTimer;
+    //function HHMMSStoSeconds(HH, MM, SS) {
+    //    return HH * 3600 + MM * 60 + SS;
+    //}
 
-    $("#save-start").click(function() {
+    function hmmss(seconds) {
+        var ss = seconds % 60;
+        ss = "" + (ss < 10 ? "0" : "") + ss;
+        if (seconds / 3600 < 1) {
+            return "" + Math.floor(seconds / 60) + ":" + ss;
+        }
+        var mm = Math.floor(seconds / 60);
+        mm = "" + (mm < 10 ? "0" : "") + mm;
+        return "" + Math.floor(seconds / 3600) + ":" + mm + ":" + ss;
+    }
+
+    var interval;
+
+    $("#add-snippet").click(function () {
+        $("#add-snippet").hide();
+        $("#mark-snippet").show();
+        interval = setInterval(function () {
+            updateMarker($("#start"));
+        }, 100);
+    });
+
+    $("#save-start").click(function () {
+        clearInterval(interval);
         var currentTime = TV23.kdp.evaluate("{video.player.currentTime}");
         $("#start").val(currentTime.toFixed(0));
         $("#save-start").hide();
-        updateEndTimer = setInterval(updateSnippetEndTimer,100);
+        interval = setInterval(function () {
+            updateMarker($("#end"));
+        }, 100);
         $("#timer_end_span").show();
         return false;
     });
 
-    $("#save-end").click(function() {
-        clearInterval(updateEndTimer);
+    $("#save-end").click(function () {
+        clearInterval(interval);
         var currentTime = TV23.kdp.evaluate("{video.player.currentTime}");
         $("#start").hide();
         $("#timer_end_span").hide();
-        $("#snipEd_start_display")[0].innerHTML = $("#start").val();
-        $("#snipEd_end_display")[0].innerHTML = $("#end").val();
+        $("#snipEd_start_display")[0].innerHTML = $("#start span").text();
+        $("#snipEd_end_display")[0].innerHTML = $("#end span").text();
         $("#snippet_editor").show();
         return false;
     });
 
-    $("#snipEd_save").click(function(){
+    $("#snipEd_save").click(function () {
         $("#snippet_editor").hide();
         $("#start").val(0);
         $("#start").show();
-        $("#snipEd_start").val($("#snipEd_start_display").text());
-        $("#snipEd_end").val($("#snipEd_end_display").text());
+        $("#id_start_time").val($("#start input").val());
+        $("#id_end_time").val($("#end input").val());
         $("#save-start").show();
     });
 
 
-    $('#add-snippet').ajaxForm(function (data) {
+    $('#snippet-form').ajaxForm(function (data) {
         $("#snippets").append(data);
+        $("#snippet-form").get(0).reset();
     });
 
-    function updateSnippetEndTimer(){
+    function updateMarker(el) {
         var currentTime = TV23.kdp.evaluate("{video.player.currentTime}");
-        $("#end").val(currentTime.toFixed(0));
+        var v = currentTime.toFixed(0);
+        el.find("input").val(v);
+        el.find("span").text(hmmss(v));
     }
 
-    function HHMMSStoSeconds(HH,MM,SS){
-        return HH*3600+MM*60+SS;
-    }
 
-    $("body").on("click", ".jumpTo", function(){
+    $("body").on("click", ".jumpTo", function () {
         TV23.kdp.sendNotification("doSeek", $(this).data("start"));
     });
 
-    $("body").on("mouseover", ".xyz", function(){
+    $("body").on("mouseover", ".moving-thumb", function () {
         var el = $(this);
         var original = el.css('background-position');
-        var x = parseInt(original);
-        console.log(x);
-        var h = setInterval(function() {
+        var start = parseInt(original);
+        var end = parseInt(el.data('end-offset'));
+        var x = start;
+
+        var h = setInterval(function () {
             x -= 100;
-            el.css('background-position', x+'px');
+            if (x <= end) {
+                // restart loop...
+                x = start;
+            }
+            el.css('background-position', x + 'px');
         }, 300);
-        el.one('mouseout', function() {
+        el.one('mouseout', function () {
             clearInterval(h);
-            el.css('background-position', original);
+            el.css('background-position', start);
         })
     });
-
 
 
 });
