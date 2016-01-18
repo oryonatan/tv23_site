@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 
-
 {% block header %}
-    {% for asset in object_list|slice:"0:1"%}
-        {{ asset.series.name }}
-    {% endfor %}
+    <a href="{% url "series_list" %}">סדרות</a>
+    &gt;
+    {{ object }}
 {% endblock %}
-
 
 {% block content %}
     <div class="row">

@@ -1,1 +1,29 @@
-s
+{% extends "base.html" %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% for asset in object_list %}
+            <div class="col-xs-6 col-sm-3 col-md-2">
+                <div class="thumbnail" style="height: 180px; overflow: hidden">
+                    <a href="{{ asset.get_absolute_url }}">
+                        <img src="{{ asset.get_thumbnail_url }}" width="120"
+                             height="90" alt="...">
+                    </a>
+
+                    <div class="caption">
+                        <a href="{{ asset.series.get_absolute_url }}">{{ asset.series }}</a>,
+                        פרק
+                        {{ asset.episode }}:
+                        {{ asset.title }}
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+

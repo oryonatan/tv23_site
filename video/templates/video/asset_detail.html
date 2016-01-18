@@ -10,12 +10,11 @@
     <div class="row">
         <div class="col-md-8">
             <div class="embed-responsive embed-responsive-4by3">
-                <script type="text/javascript"
-                        src="{{ object.get_dynamic_embed_script }}"></script>
+                <script src="{{ object.get_dynamic_embed_script }}"></script>
             </div>
             <h1>
                 {{ object.full_name }}
-                <i>{{ object.episdoe }}</i>
+                <a href="{{ asset.series.get_absolute_url }}">{{ asset.series }}</a>,
             </h1>
             <ul class="nav nav-pills">
                 {% for genre in object.genres.all %}
