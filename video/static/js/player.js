@@ -68,7 +68,8 @@ $(function () {
 
     $('#snippet-form').ajaxForm({
         beforeSerialize: function() {
-            $("#id_tags").val($("#id_tags_select").val().join(","));
+            var tags = $("#id_tags_select").val();
+            $("#id_tags").val(tags ? tags.join(",") : '');
         },
         clearForm: true,
         success: function (data) {
