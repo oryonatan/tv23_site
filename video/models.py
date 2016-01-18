@@ -20,7 +20,7 @@ class Genre(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.name
+        return self.name.strip() or "kuku"
 
     def get_absolute_url(self):
         return reverse("genre", args=(self.pk,))

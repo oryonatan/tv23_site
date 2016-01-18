@@ -77,6 +77,7 @@ class SeasonDetailView(DetailView):
 
 class GenreListView(ListView):
     model = models.Genre
+    ordering = "name"
 
 
 class GenreDetailView(DetailView):

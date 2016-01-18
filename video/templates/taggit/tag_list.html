@@ -1,17 +1,19 @@
 {% extends "base.html" %}
 
 
+
 {% block header %}
     תגיות
 {% endblock %}
 
 
 {% block content %}
+    <div id="tag_cloud" style="height: 350px;"></div>
     <ul class="list-group">
         {% for object in object_list %}
             <li class="list-group-item">
                 <span class="badge">
-                    {{ object.taggit_taggeditem_items.count}}
+                    {{ object.taggit_taggeditem_items.count }}
                 </span>
                 <a href="{% url "tag" object.id %}">
                     {{ object|default:"?" }}
@@ -20,4 +22,25 @@
         {% endfor %}
     </ul>
 
+{% endblock %}
+
+
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="/static/css/jqcloud.css">
+    <script src="/static/js/jqcloud-1.0.4.min.js"></script>
+    <script>
+
+        var word_array = [
+            {% for object in object_list %}
+                {text:"{{object.name}}", weight:{{ object.taggit_taggeditem_items.count }} ,
+                    link:"{% url "tag" object.id %}"},
+            {% endfor %}
+        ];
+        // ...as many words as you want
+
+        $(function () {
+            // When DOM is ready, select the container element and call the jQCloud method, passing the array of words as the first argument.
+            $("#tag_cloud").jQCloud(word_array);
+        });
+    </script>
 {% endblock %}

@@ -8,6 +8,8 @@ from video import models
 
 NLI_PARTNER_ID = """1829221"""
 
+def is_not_blank(mystr):
+    return mystr.strip()
 
 class Command(BaseCommand):
     help = 'Imports assets from assets.json'
@@ -26,7 +28,7 @@ class Command(BaseCommand):
 
     def import_asset(self, asset):
         genres = [models.Genre.objects.get_or_create(name=genere_name)[0] for
-                  genere_name in asset['genres']]
+                  genere_name in asset['genres'] if is_not_blank(genere_name)]
 
         asset['series'], created = models.Series.objects.get_or_create(
                 name=asset['series']
@@ -51,3 +53,5 @@ class Command(BaseCommand):
         )
         o.genres.add(*genres)
         o.save()
+
+

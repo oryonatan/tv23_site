@@ -7,6 +7,8 @@
 
 
 {% block content %}
+        <div id="genere_cloud" style="height: 350px;"></div>
+
     <ul class="list-group">
         {% for object in object_list %}
             <li class="list-group-item">
@@ -20,4 +22,26 @@
         {% endfor %}
     </ul>
 
+{% endblock %}
+
+
+
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="/static/css/jqcloud.css">
+    <script src="/static/js/jqcloud-1.0.4.min.js"></script>
+    <script>
+
+        var word_array = [
+            {% for object in object_list %}
+                {text:"{{ object|default:"?" }}", weight:{{ object.appears_in_assets.count }} ,
+                    link:"{{ object.get_absolute_url }}"},
+            {% endfor %}
+        ];
+        // ...as many words as you want
+
+        $(function () {
+            // When DOM is ready, select the container element and call the jQCloud method, passing the array of words as the first argument.
+            $("#genere_cloud").jQCloud(word_array);
+        });
+    </script>
 {% endblock %}
