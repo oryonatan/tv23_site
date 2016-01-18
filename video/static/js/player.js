@@ -66,9 +66,20 @@ $(function () {
     });
 
 
-    $('#snippet-form').ajaxForm(function (data) {
-        $("#snippets").append(data);
-        $("#snippet-form").get(0).reset();
+    $('#snippet-form').ajaxForm({
+        beforeSerialize: function() {
+            var tags = $("#id_tags_select").val();
+            $("#id_tags").val(tags ? tags.join(",") : '');
+        },
+        clearForm: true,
+        success: function (data) {
+            $("#snippets").append(data);
+            $("#snippet-form").get(0).reset();
+            $("#id_tags_select").val(null).trigger('change');
+            $("#add-snippet").show();
+            $("#mark-snippet").hide();
+            $("#snippet_editor").hide();
+        }
     });
 
     function updateMarker(el) {
@@ -102,6 +113,17 @@ $(function () {
             clearInterval(h);
             el.css('background-position', start);
         })
+    });
+
+    var tags_url = $("#id_tags_select").data('tags-url');
+    $.get(tags_url, function (data) {
+        $("#id_tags_select").select2({
+            dir: 'rtl',
+            language: "he",
+            tags: true,
+            data: data,
+            tokenSeparators: [',']
+        });
     });
 
 

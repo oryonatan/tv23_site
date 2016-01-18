@@ -12,6 +12,7 @@ from django.views.generic.base import View
 
 import taggit.models
 
+
 class SnippetForm(forms.ModelForm):
     class Meta:
         model = models.Snippet
@@ -27,7 +28,7 @@ class SnippetForm(forms.ModelForm):
         cleaned_data = super().clean()
         if cleaned_data.get("start_time") >= cleaned_data.get("end_time"):
             raise forms.ValidationError(
-                "start time must be smaller than end time")
+                    "start time must be smaller than end time")
 
 
 class AssetDetailView(DetailView):
@@ -92,3 +93,8 @@ class TagDetailView(DetailView):
     model = taggit.models.Tag
 
 
+class TagListAjaxView(View):
+    def get(self, request, *args, **kwargs):
+        qs = taggit.models.Tag.objects.order_by('name')
+        return JsonResponse([{'id': tag.name, 'text': tag.name} for tag in qs],
+                            safe=False)

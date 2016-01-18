@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^gen/$', video.views.GenreListView.as_view(), name="genre_list"),
     url(r'^gen/(?P<pk>\d+)$', video.views.GenreDetailView.as_view(), name="genre"),
     url(r'^tag/$', video.views.TagListView.as_view(), name="tag_list"),
+    url(r'^tag/ajax/$', video.views.TagListAjaxView.as_view(), name="tag_list_ajax"),
     url(r'^tag/(?P<pk>\d+)$', video.views.TagDetailView.as_view(), name="tag"),
 ]

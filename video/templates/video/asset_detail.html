@@ -71,11 +71,13 @@
                         <input type="hidden" id="id_end_time"
                                name="end_time">
                         <input type="text" placeholder="הכנס שם למקטע"
-                               name="title">
-                        <input type="text" placeholder="ההכנס תיאור למקטע"
-                               name="description">
-                        <input type="text" placeholder="תגים מופרדים בפסיק)"
-                               name="tags">
+                               name="title" class="form-control">
+                        <textarea placeholder="ההכנס תיאור למקטע"
+                               name="description" class="form-control"></textarea>
+                        <input type="hidden" placeholder="תגים מופרדים בפסיק)"
+                               id="id_tags" name="tags">
+                        <select id="id_tags_select" class="form-control" multiple
+                                data-tags-url="{% url "tag_list_ajax" %}" placeholder="תגים"></select>
                         <button id="snipEd_save" class="btn btn-default">
                             שמירה
                             <i class="glyphicon glyphicon-save"></i>
@@ -91,8 +93,10 @@
 {% endblock %}
 
 {% block scripts %}
+    <link rel="stylesheet" href="{% static "select2/css/select2.css" %}">
     <script src="{% static "js/csrf.js" %}"></script>
     <script src="{% static "js/jquery.form.js" %}"></script>
+    <script src="{% static "select2/js/select2.full.js" %}"></script>
     <script src="{% static "js/player.js" %}"></script>
 {% endblock %}
 
