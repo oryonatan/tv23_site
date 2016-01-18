@@ -1,6 +1,10 @@
 from django.core.urlresolvers import reverse
 from django.db import models
 from taggit.managers import TaggableManager
+# import taggit.managers
+# class TaggableManager(taggit.managers._TaggableManager):
+#     pass
+
 
 THUMBNAIL_URL = 'http://cdnbakmi.kaltura.com/p/1829221/sp/182922100/thumbnail/entry_id/{}/version/100000/acv/161'
 

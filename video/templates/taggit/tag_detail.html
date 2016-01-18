@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+
+{% block header %}
+
+    <a href="{% url "tag_list" %}">
+תגיות
+    </a>
+    &gt;
+
+    {{ object.name }}
+
+    <span class="badge">
+        {{ object.appears_in_assets.count }}
+    </span>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="row">
+        {% for tagged_item in object.taggit_taggeditem_items.all %}
+            {% with snippet=tagged_item.content_object %}
+
+                <div class="col-xs-6 col-sm-3 col-md-2">
+
+                    <div class="thumbnail" style="height: 180px; overflow: hidden">
+                        <a href="{{ snippet.asset.get_absolute_url }}">
+                            <img src="{{ snippet.asset.get_thumbnail_url }}" width="120"
+                                 height="90" alt="...">
+                        </a>
+
+                        <div class="caption">
+                            <b><a href="{{ snippet.asset.series.get_absolute_url }}">{{ snippet.asset.series }}</a></b>:
+                            פרק
+                            {{ snippet.asset.episode }}
+                            :
+                            {{ snippet.asset.title }}
+                        </div>
+                    </div>
+                </div>
+            {% endwith %}
+        {% endfor %}
+    </div>
+
+
+{% endblock %}
+

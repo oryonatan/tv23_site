@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+
+{% block header %}
+    תגיות
+{% endblock %}
+
+
+{% block content %}
+    <ul class="list-group">
+        {% for object in object_list %}
+            <li class="list-group-item">
+                <span class="badge">
+                    {{ object.taggit_taggeditem_items.count}}
+                </span>
+                <a href="{% url "tag" object.id %}">
+                    {{ object|default:"?" }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

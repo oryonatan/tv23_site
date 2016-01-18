@@ -10,6 +10,7 @@ from . import models
 # Create your views here.
 from django.views.generic.base import View
 
+import taggit.models
 
 class SnippetForm(forms.ModelForm):
     class Meta:
@@ -80,3 +81,13 @@ class GenreListView(ListView):
 
 class GenreDetailView(DetailView):
     model = models.Genre
+
+
+class TagListView(ListView):
+    model = taggit.models.Tag
+
+
+class TagDetailView(DetailView):
+    model = taggit.models.Tag
+
+
