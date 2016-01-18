@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^tag/(?P<pk>\d+)$', video.views.TagDetailView.as_view(), name="tag"),
 
     url(r'^all/$',video.views.AssetListView.as_view(),name="video_list"),
+    url(r'^search/$',video.views.AssetSearchView.as_view(),name="video_search"),
     url(r'^(?P<pk>\d+)/$', video.views.AssetDetailView.as_view(), name="video"),
 
     url(r'^admin/', include(admin.site.urls)),

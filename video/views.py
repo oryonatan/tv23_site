@@ -56,6 +56,19 @@ class AssetListView(ListView):
     ordering = "?"
 
 
+class AssetSearchView(ListView):
+    model = models.Asset
+    paginate_by = 60
+    ordering = "full_name"
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        self.q = self.request.GET.get('q')
+        if self.q:
+            qs = qs.filter(full_name__icontains=self.q)
+        return qs
+
+
 class SeriesListView(ListView):
     model = models.Series
     paginate_by = 36
