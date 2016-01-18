@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.db import models
+from taggit.managers import TaggableManager
 
 THUMBNAIL_URL = 'http://cdnbakmi.kaltura.com/p/1829221/sp/182922100/thumbnail/entry_id/{}/version/100000/acv/161'
 
@@ -28,7 +29,9 @@ class Series(models.Model):
     # to_year = models.SmallIntegerField(null=True)
     genre = models.ManyToManyField(Genre, related_name="appears_in_series",
                                    blank=True)
-    '''todo : add link to image   '''
+    # TODO : add link to image
+
+    tags = TaggableManager(blank=True)
 
     def __str__(self):
         return self.name
@@ -54,16 +57,6 @@ class Season(models.Model):
         return reverse("season", args=(self.id,))
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse("tag", args=(self.pk,))
-
-
 class Asset(models.Model):
     entry_id = models.CharField(max_length=50, unique=True)
     durationms = models.PositiveIntegerField(null=True)
@@ -81,7 +74,7 @@ class Asset(models.Model):
                                     blank=True)
     primo_url = models.CharField(max_length=200)
 
-    tags = models.ManyToManyField(Tag, blank=True, related_name='assets')
+    tags = TaggableManager(blank=True)
 
     def __str__(self):
         return self.full_name
@@ -103,7 +96,10 @@ class Snippet(models.Model):
     title = models.CharField(max_length=1000, null=True, blank=True)
     description = models.TextField(max_length=1000, null=True, blank=True)
 
-    tags = models.ManyToManyField(Tag, blank=True, related_name='snippets')
+    tags = TaggableManager(blank=True)
+
+    def duration(self):
+        return self.end_time - self.start_time
 
     def get_kaltura_thumb_start_offset(self):
         ratio = self.start_time / (self.asset.durationms / 1000)
@@ -113,16 +109,3 @@ class Snippet(models.Model):
         ratio = self.end_time / (self.asset.durationms / 1000)
         return str(int(ratio * 10000 // 100 * 100 - 100))
 
-    def get_start_HHMMSS(self):
-        return (seconds_to_HHMMSS(self.start_time))
-
-    def get_end_HHMMSS(self):
-        return (seconds_to_HHMMSS(self.end_time))
-
-
-def seconds_to_HHMMSS(seconds):
-    if (seconds < 60):
-        return str(seconds)
-    if (seconds < 3600):
-        return "{}:{}".format((seconds // 60), seconds % 60)
-    return "{}:{}:{}".format((seconds // 3600), (seconds // 60), seconds % 60)
