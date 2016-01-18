@@ -1,10 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.db import models
 from taggit.managers import TaggableManager
-# import taggit.managers
-# class TaggableManager(taggit.managers._TaggableManager):
-#     pass
-
 
 THUMBNAIL_URL = 'http://cdnbakmi.kaltura.com/p/1829221/sp/182922100/thumbnail/entry_id/{}/version/100000/acv/161'
 
@@ -44,7 +40,10 @@ class Series(models.Model):
         return self.asset_set.first().get_thumbnail_url()
 
     def get_absolute_url(self):
-        return reverse("episodes_list", args=(self.id, 18, 1))
+        return reverse("series", args=(self.id,))
+
+    def assets_by_epiosde(self):
+        return self.asset_set.order_by("episode")
 
 
 class Season(models.Model):
@@ -112,4 +111,3 @@ class Snippet(models.Model):
     def get_kaltura_thumb_end_offset(self):
         ratio = self.end_time / (self.asset.durationms / 1000)
         return str(int(ratio * 10000 // 100 * 100 - 100))
-
