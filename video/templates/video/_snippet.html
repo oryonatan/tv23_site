@@ -26,7 +26,7 @@
             <div class="snippet-tags">
                 {% for tag in snippet.tags.all %}
                     <span class="bg-info">
-                        <a href="{{ tag.get_absolute_url }}">{{ tag }}</a>
+                        <a href="{% url "tag" tag.id %}">{{ tag }}</a>
                     </span>
                     &nbsp;
                 {% endfor %}
