@@ -14,11 +14,13 @@
             </div>
             <h1>
                 {{ object.full_name }}
-                <a href="{{ asset.series.get_absolute_url }}">{{ asset.series }}</a>,
             </h1>
-            <ul class="nav nav-pills">
+            <ul class="list-inline">
+                <li>
+                    <b><a href="{{ asset.series.get_absolute_url }}">{{ asset.series }}</a></b>
+                </li>
                 {% for genre in object.genres.all %}
-                    <li class="active">
+                    <li>
                         <a href="{{ genre.get_absolute_url }}">
                             {{ genre }}
                         </a>
