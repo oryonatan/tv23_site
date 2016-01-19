@@ -101,8 +101,14 @@ class Snippet(models.Model):
 
     tags = TaggableManager(blank=True)
 
+    def get_absolute_url(self):
+        return "{}?start={}".format(self.asset.get_absolute_url(), self.start_time)
+
+
+
     def duration(self):
         return self.end_time - self.start_time
+
 
     def get_kaltura_thumb_start_offset(self):
         ratio = self.start_time / (self.asset.durationms / 1000)
