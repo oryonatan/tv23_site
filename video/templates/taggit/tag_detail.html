@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+    {% extends "base.html" %}
 
 
 {% block header %}
@@ -26,13 +26,16 @@
                 <div class="col-xs-6 col-sm-3 col-md-2">
 
                     <div class="thumbnail" style="height: 180px; overflow: hidden">
-                        <a href="{{ snippet.asset.get_absolute_url }}">
+                        <a href="{{ snippet.get_absolute_url }}">
                             <img src="{{ snippet.asset.get_thumbnail_url }}" width="120"
                                  height="90" alt="...">
                         </a>
 
                         <div class="caption">
-                            <b><a href="{{ snippet.asset.series.get_absolute_url }}">{{ snippet.asset.series }}</a></b>:
+                            {% if snippet.title %}
+                                <b><a href="{{ snippet.get_absolute_url }}">{{ snippet.title }}</a></b> &bull;
+                            {% endif %}
+                            <b><a href="{{ snippet.get_absolute_url }}">{{ snippet.asset.series }}</a></b>:
                             פרק
                             {{ snippet.asset.episode }}
                             :

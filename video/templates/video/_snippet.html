@@ -6,21 +6,27 @@
 
     <div class="row">
 
-
         <div class="col-xs-4">
             <div class="vid-thumb">
-                {%  moving_thumb snippet.asset.entry_id snippet.get_kaltura_thumb_start_offset snippet.get_kaltura_thumb_end_offset %}
+                {% moving_thumb snippet.asset.entry_id snippet.get_kaltura_thumb_start_offset snippet.get_kaltura_thumb_end_offset %}
                 <div class="timer">
                     {{ snippet.duration|hmmss }}
                 </div>
                 <div class="times">
-                    {{ snippet.start_time|hmmss }} - {{ snippet.end_time|hmmss }}
+                    {{ snippet.start_time|hmmss }}
+                    - {{ snippet.end_time|hmmss }}
                 </div>
             </div>
         </div>
 
         <div class="col-xs-8">
             <div class="snippet-title">
+                {% if user.is_superuser %}
+                    <div class="pull-right">
+                        <a href="{{ snippet.get_admin_url }}"><i
+                                class="glyphicon glyphicon-edit"></i></a>
+                    </div>
+                {% endif %}
                 <b>{{ snippet.title }}</b>
             </div>
             <div class="snippet-tags">

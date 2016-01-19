@@ -2,11 +2,34 @@ var TV23 = {
     kdp: null
 };
 
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    return null;
+}
+
 $(function () {
     "use strict";
     kWidget.addReadyCallback(function (playerId) {
+
         TV23.kdp = document.getElementById(playerId);
+
+        // Jump to start location:
+        var start = getQueryVariable('start');
+        if (start && /^\d+$/.test(start)) {
+            TV23.kdp.kBind('playerUpdatePlayhead.start', function () {
+                TV23.kdp.sendNotification('doSeek', start);
+                TV23.kdp.kUnbind('.start')
+            });
+        }
     });
+
 
     //function HHMMSStoSeconds(HH, MM, SS) {
     //    return HH * 3600 + MM * 60 + SS;
@@ -67,7 +90,7 @@ $(function () {
 
 
     $('#snippet-form').ajaxForm({
-        beforeSerialize: function() {
+        beforeSerialize: function () {
             var tags = $("#id_tags_select").val();
             $("#id_tags").val(tags ? tags.join(",") : '');
         },
