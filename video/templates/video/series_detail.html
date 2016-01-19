@@ -1,32 +1,31 @@
 {% extends "base.html" %}
 
-
 {% block header %}
-
+    <a href="{% url "series_list" %}">סדרות</a>
+    &gt;
+    {{ object }}
 {% endblock %}
 
-
 {% block content %}
+    <div class="row">
+        {% for asset in object.assets_by_epiosde %}
+            <div class="col-xs-6 col-sm-3 col-md-2">
+                <div class="thumbnail" style="height: 180px; overflow: hidden">
+                    <a href="{{ asset.get_absolute_url }}">
+                        <img src="{{ asset.get_thumbnail_url }}" width="120" height="90" alt="...">
+                    </a>
 
+                    <div class="caption">
+                        <div class="badge" > פרק מס: {{ asset.episode }}</div>
+                        <div>
+                            {{ asset.title }}
+                        </div>
 
-    <p>
-שם הסדרה
-        {{ object.name }}
-    עונות
-
-    </p>
-
-    {#    <iframe src='{{ object.video_url }}' style='overflow:hidden;height:480px;width:640px'></iframe>#}
-    <list>
-        {% for season in object.season_set.all %}
-            <a href="{{ season.get_absolute_url }}">
-                <li>
-                    {{ season.year }}
-                </li>
-            </a>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-    </list>
-
+    </div>
 
 {% endblock %}
 

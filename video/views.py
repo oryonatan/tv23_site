@@ -1,13 +1,10 @@
-import random
-
 from django import forms
-from django.core.urlresolvers import reverse_lazy
-from django.http.response import HttpResponse, JsonResponse
+from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.views.generic import DetailView
 from django.views.generic.list import ListView
+
 from . import models
-# Create your views here.
 from django.views.generic.base import View
 
 import taggit.models
@@ -54,12 +51,22 @@ class AssetDetailView(DetailView):
 
 
 class AssetListView(ListView):
+    model = models.Asset
+    paginate_by = 60
+    ordering = "?"
+
+
+class AssetSearchView(ListView):
+    model = models.Asset
+    paginate_by = 60
+    ordering = "full_name"
+
     def get_queryset(self):
-        EPISODES_PER_PAGE = int(self.kwargs['ep_per_page'])
-        first_ep = (int(self.kwargs['page']) - 1) * EPISODES_PER_PAGE
-        last_ep = first_ep + EPISODES_PER_PAGE
-        series = models.Series.objects.get(pk=self.kwargs['pk'])
-        return series.asset_set.order_by("episode").all()[first_ep:last_ep]
+        qs = super().get_queryset()
+        self.q = self.request.GET.get('q')
+        if self.q:
+            qs = qs.filter(full_name__icontains=self.q)
+        return qs
 
 
 class SeriesListView(ListView):

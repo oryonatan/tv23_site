@@ -10,16 +10,17 @@
     <div class="row">
         <div class="col-md-8">
             <div class="embed-responsive embed-responsive-4by3">
-                <script type="text/javascript"
-                        src="{{ object.get_dynamic_embed_script }}"></script>
+                <script src="{{ object.get_dynamic_embed_script }}"></script>
             </div>
             <h1>
                 {{ object.full_name }}
-                <i>{{ object.episdoe }}</i>
             </h1>
-            <ul class="nav nav-pills">
+            <ul class="list-inline">
+                <li>
+                    <b><a href="{{ asset.series.get_absolute_url }}">{{ asset.series }}</a></b>
+                </li>
                 {% for genre in object.genres.all %}
-                    <li class="active">
+                    <li>
                         <a href="{{ genre.get_absolute_url }}">
                             {{ genre }}
                         </a>
@@ -73,12 +74,21 @@
                         <input type="text" placeholder="הכנס שם למקטע"
                                name="title" class="form-control">
                         <textarea placeholder="ההכנס תיאור למקטע"
-                               name="description" class="form-control"></textarea>
+                                  name="description"
+                                  class="form-control"></textarea>
                         <input type="hidden" placeholder="תגים מופרדים בפסיק)"
                                id="id_tags" name="tags">
-                        <select id="id_tags_select" class="form-control" multiple
-                                data-tags-url="{% url "tag_list_ajax" %}" placeholder="תגים"></select>
-                        <button id="snipEd_save" class="btn btn-default">
+                        <div class="form-group">
+
+                            <select id="id_tags_select" class="form-control"
+                                    style="width: 100%"
+                                    multiple="multiple"
+                                    data-tags-url="{% url "tag_list_ajax" %}"
+                                    placeholder="תגים"></select>
+                        </div>
+
+                        <button id="snipEd_save"
+                                class="btn btn-primary btn-block">
                             שמירה
                             <i class="glyphicon glyphicon-save"></i>
                         </button>
