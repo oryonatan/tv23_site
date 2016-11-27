@@ -2,6 +2,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 import video.views
 
+
+# delte me please
 urlpatterns = [
     url(r'^$', video.views.SeriesListView.as_view(), name="main"),
 
